@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { addDoc, collection, getDocs } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { db } from "../config/firebase";
 export const addTask = createAsyncThunk('addTask', async ({ uid, value }) => {
     try {
@@ -25,6 +25,14 @@ export const fetchTask = createAsyncThunk('fetchTask', async (uid) => {
             }
         })
         return allTask
+    } catch (error) {
+        console.log(error);
+    }
+
+})
+export const editTask = createAsyncThunk('fetchTask', async ({ editId, value }) => {
+    try {
+        await getDoc(doc(db, `${uid}`, editId), value)
     } catch (error) {
         console.log(error);
     }

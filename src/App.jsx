@@ -12,6 +12,7 @@ const App = () => {
       <Toaster />
       <Routes>
         <Route path="/" element={<ProtectedRoutes Component={Home} />} />
+        <Route path="/:id" element={<ProtectedRoutes Component={Home} />} />
         {/* <Route path="/signin" element={<ProtectedRoutes Component={SignIn} />} /> */}
         <Route path="/signup" element={<SignUp />} />
         <Route path="*" element={<Error />} />
