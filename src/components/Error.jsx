@@ -1,4 +1,6 @@
-import { useEffect } from "react"
+import { onAuthStateChanged } from "firebase/auth";
+import { useEffect, useState } from "react"
+import { auth } from "../config/firebase";
 
 const Error = () => {
     const [user, setUser] = useState(null);
@@ -11,8 +13,7 @@ const Error = () => {
     }, []);
 
     return (
-        <div className="bg-black h-screen flex  justify-center items-center text-white">Error...</div>
-
+        <div className="bg-black h-screen flex justify-center items-center text-white text-3xl">Error...</div>
     )
 }
 

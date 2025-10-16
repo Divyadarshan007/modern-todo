@@ -1,23 +1,29 @@
 import { onAuthStateChanged, signOut } from "firebase/auth"
 import { useEffect, useState } from "react"
 import { auth } from "../config/firebase"
-import { useDispatch } from "react-redux"
-import { addTask } from "../features/todoSlice"
+import { useDispatch, useSelector } from "react-redux"
+import { addTask, fetchTask } from "../features/todoSlice"
 
 const Home = () => {
     const [user, setUser] = useState(null);
     const [input, setInput] = useState({
         task: '', priority: ''
     })
+    const tasks = useSelector((store) => store.todos.list)
+
     const dispatch = useDispatch()
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (u) => {
             setUser(u);
         });
-
         return () => unsubscribe();
     }, []);
+
+    useEffect(() => {
+        dispatch(fetchTask(user?.uid))
+    }, [user])
+
     const handleSubmit = (e) => {
         e.preventDefault()
         dispatch(addTask({ uid: user.uid, value: input }))
@@ -26,6 +32,16 @@ const Home = () => {
     return (
         <section className="bg-gray-50 dark:bg-gray-900 py-10 h-screen sm:py-20">
             <div className="mx-auto max-w-screen-xl px-4 lg:px-12">
+                <div className="pb-5 flex justify-end">
+                    <div>
+                        
+                    </div>
+                    <button className="bg-rose-700 rounded-md px-7 py-1 text-white" onClick={() => {
+                        signOut(auth)
+                        console.log('hello');
+
+                    }}>logout</button>
+                </div>
                 <div className="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
                     <div className=" space-y-3 md:space-y-0 md:space-x-4 p-4">
                         <form className="flex justify-center items-center gap-5" onSubmit={handleSubmit}>
@@ -47,11 +63,7 @@ const Home = () => {
                         </form>
 
                     </div>
-                    <button className="bg-rose-700 rounded-md px-7 py-1 text-white" onClick={() => {
-                        signOut(auth)
-                        console.log('hello');
 
-                    }}>logout</button>
                     <div className="overflow-x-auto">
                         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -64,12 +76,20 @@ const Home = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr className="border-b dark:border-gray-700">
-                                    <th scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">Apple iMac 27"</th>
-                                    <td className="px-4 py-3">PC</td>
-                                    <td className="px-4 py-3">Apple</td>
-                                    <td className="px-4 py-3">300</td>
-                                </tr>
+                                {tasks.map((task, idx) => {
+                                    return <tr key={task.id} className="border-b dark:border-gray-700">
+                                        <th scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{idx + 1}</th>
+                                        <td className="px-4 py-3">{task.task}</td>
+                                        <td className="px-4 py-3">{task.priority}</td>
+                                        <td className="px-4 py-3">{task.status}</td>
+                                        <td className="px-4 py-3">
+                                            <div className="flex items-center gap-4">
+                                                <button>Edit</button>
+                                                <button>Delete</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                })}
                             </tbody>
                         </table>
                     </div>
