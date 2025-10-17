@@ -3,7 +3,8 @@ import Home from "./pages/Home"
 import SignUp from "./pages/SignUp"
 import { Toaster } from "react-hot-toast"
 import ProtectedRoutes from "./components/ProtectedRoutes"
-import Error from "./components/Error"
+import ErrorPage from "./components/ErrorPage"
+
 
 
 const App = () => {
@@ -12,10 +13,8 @@ const App = () => {
       <Toaster />
       <Routes>
         <Route path="/" element={<ProtectedRoutes Component={Home} />} />
-        <Route path="/:id" element={<ProtectedRoutes Component={Home} />} />
-        {/* <Route path="/signin" element={<ProtectedRoutes Component={SignIn} />} /> */}
         <Route path="/signup" element={<SignUp />} />
-        <Route path="*" element={<Error />} />
+      <Route path="*" element={<ErrorPage/>}/>
       </Routes>
     </BrowserRouter>
   )

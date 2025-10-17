@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { addDoc, collection, doc, getDoc, getDocs } from "firebase/firestore";
-import { db } from "../config/firebase";
+import { addDoc, collection, deleteDoc, doc, getDocs, updateDoc } from "firebase/firestore";
+import { auth, db, provider } from "../config/firebase";
+import { signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
 export const addTask = createAsyncThunk('addTask', async ({ uid, value }) => {
     try {
         const docRef = await addDoc(collection(db, `${uid}`), {
@@ -30,9 +31,43 @@ export const fetchTask = createAsyncThunk('fetchTask', async (uid) => {
     }
 
 })
-export const editTask = createAsyncThunk('fetchTask', async ({ editId, value }) => {
+export const editTask = createAsyncThunk('editTask', async ({ uid, editId, value }) => {
     try {
-        await getDoc(doc(db, `${uid}`, editId), value)
+        await updateDoc(doc(db, `${uid}`, editId), value)
+    } catch (error) {
+        console.log(error);
+    }
+
+})
+export const deleteTask = createAsyncThunk('deleteTask', async ({ uid, deleteId }) => {
+    try {
+        await deleteDoc(doc(db, `${uid}`, deleteId))
+    } catch (error) {
+        console.log(error);
+    }
+
+})
+export const signInUser = createAsyncThunk('signInUser', async ({ email, password }) => {
+    try {
+        const { user } = await signInWithEmailAndPassword(auth, email, password)
+        return {
+            uid: user.uid,
+            displayName: user.displayName,
+            email: user.email
+        }
+    } catch (error) {
+        console.log(error);
+    }
+
+})
+export const signInWithGoogle = createAsyncThunk('signInWithGoogle', async () => {
+    try {
+        const { user } = await signInWithPopup(auth, provider)
+        return {
+            uid: user.uid,
+            displayName: user.displayName,
+            email: user.email
+        }
     } catch (error) {
         console.log(error);
     }
@@ -41,10 +76,17 @@ export const editTask = createAsyncThunk('fetchTask', async ({ editId, value }) 
 const todoSlice = createSlice({
     name: 'todos',
     initialState: {
-        list: []
+        list: [],
+        currentUser: null
     },
     reducers: {
-
+        setUser: (state, action) => {
+            state.currentUser = action.payload
+        },
+        logout: (state) => {
+            signOut(auth);
+            state.currentUser = null;
+        }
     },
     extraReducers: (builder) => {
         builder.addCase(addTask.fulfilled, (state, action) => {
@@ -53,7 +95,14 @@ const todoSlice = createSlice({
         builder.addCase(fetchTask.fulfilled, (state, action) => {
             state.list = action.payload
         })
+
+        builder.addCase(signInUser.fulfilled, (state, action) => {
+            state.currentUser = action.payload
+        })
+        builder.addCase(signInWithGoogle.fulfilled, (state, action) => {
+            state.currentUser = action.payload
+        })
     }
 })
-
+export const { setUser, logout } = todoSlice.actions
 export default todoSlice.reducer
