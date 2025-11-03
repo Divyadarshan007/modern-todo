@@ -2,7 +2,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth"
 import { useState } from "react"
 import { auth } from "../config/firebase"
 import toast from "react-hot-toast"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 const SignUp = () => {
 
     const [input, setInput] = useState({
@@ -37,37 +37,69 @@ const SignUp = () => {
         return true
     }
     return (
-        <section className="bg-gray-50 dark:bg-gray-900">
-            <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-                <a href="#" className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
-                    <img className="w-8 h-8 mr-2" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg" alt="logo" />
-                    Flowbite
-                </a>
-                <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-                    <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-                        <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                            Create an account
-                        </h1>
-                        <form className="space-y-4 md:space-y-6" action="#" onSubmit={handleSubmit}>
-                            <div>
-                                <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
-                                <input type="email" name="email" id="email" onChange={handleChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-600 focus:border-gray-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@company.com"  />
-                            </div>
-                            <div>
-                                <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-                                <input type="password" name="password" id="password" onChange={handleChange} placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"  />
-                            </div>
-                            <div>
-                                <label htmlFor="cPassword" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirm password</label>
-                                <input type="cPassword" name="cPassword" id="cPassword" onChange={handleChange} placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-600 focus:border-gray-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"  />
-                            </div>
-                            <button type="submit" className="w-full text-white bg-gray-600 hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800">Create an account</button>
-                            <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                                Already have an account? <a href="#" className="font-medium text-gray-600 hover:underline dark:text-gray-500">Login here</a>
-                            </p>
-                        </form>
-                    </div>
+        <section className="min-h-screen bg-gradient-to-b from-[#0f0b1a] to-[#1a1630] text-slate-100 flex items-center justify-center px-4">
+            <div className="w-full max-w-md bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] rounded-2xl shadow-2xl p-8 backdrop-blur-sm">
+
+                <div className="flex flex-col items-center mb-8">
+                    <h1 className="text-2xl font-bold text-center bg-gradient-to-r from-[#9e3cd7] to-[#3b9dff] bg-clip-text text-transparent">
+                        Create Your Account
+                    </h1>
+                    <p className="text-slate-400 text-sm mt-1">Join and start managing your tasks easily</p>
                 </div>
+                <form className="space-y-5" onSubmit={handleSubmit}>
+                    <div>
+                        <label htmlFor="email" className="block mb-2 text-sm text-slate-300">
+                            Email Address
+                        </label>
+                        <input
+                            type="email"
+                            id="email"
+                            onChange={handleChange}
+                            placeholder="you@example.com"
+                            className="w-full px-4 py-2 rounded-lg bg-transparent border border-[rgba(255,255,255,0.08)] text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-[#9e3cd7]"
+                        />
+                    </div>
+
+                    <div>
+                        <label htmlFor="password" className="block mb-2 text-sm text-slate-300">
+                            Password
+                        </label>
+                        <input
+                            type="password"
+                            id="password"
+                            onChange={handleChange}
+                            placeholder="••••••••"
+                            className="w-full px-4 py-2 rounded-lg bg-transparent border border-[rgba(255,255,255,0.08)] text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-[#9e3cd7]"
+                        />
+                    </div>
+
+                    <div>
+                        <label htmlFor="cPassword" className="block mb-2 text-sm text-slate-300">
+                            Confirm Password
+                        </label>
+                        <input
+                            type="password"
+                            id="cPassword"
+                            onChange={handleChange}
+                            placeholder="••••••••"
+                            className="w-full px-4 py-2 rounded-lg bg-transparent border border-[rgba(255,255,255,0.08)] text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-[#9e3cd7]"
+                        />
+                    </div>
+
+                    <button
+                        type="submit"
+                        className="w-full rounded-lg py-2.5 font-semibold bg-gradient-to-r from-[#3b9dff] to-[#304ffe] hover:opacity-90 transition-all duration-300"
+                    >
+                        Create Account
+                    </button>
+
+                    <p className="text-sm text-center text-slate-400 mt-4">
+                        Already have an account?{" "}
+                        <Link to="/" className="text-[#bd66de] hover:underline">
+                            Log in
+                        </Link>
+                    </p>
+                </form>
             </div>
         </section>
 

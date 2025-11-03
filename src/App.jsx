@@ -4,14 +4,12 @@ import SignUp from "./pages/SignUp"
 import { Toaster } from "react-hot-toast"
 import ProtectedRoutes from "./components/ProtectedRoutes"
 import ErrorPage from "./components/ErrorPage"
-import Header from "./components/Header"
 
 
 
 const App = () => {
   return (
     <BrowserRouter>
-      <Header />
       <Toaster />
       <Routes>
         <Route path="/" element={<ProtectedRoutes Component={Home} />} />

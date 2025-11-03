@@ -1,4 +1,4 @@
-import { Bell, LogOut, Search, Settings } from "lucide-react"
+import { Bell, LogOut, Search } from "lucide-react"
 import { useDispatch } from "react-redux"
 import { logout } from "../features/todoSlice"
 
@@ -34,7 +34,6 @@ const Header = () => {
                 </div>
             </div>
         </header>
-
     )
 }
 
