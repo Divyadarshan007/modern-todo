@@ -23,13 +23,18 @@ const Header = () => {
                         />
                     </div>
                     <div className="flex items-center gap-4 text-gray-300">
-                        <button className="relative hover:text-white transition">
-                            <Bell className="w-5 h-5" />
-                            <span className="absolute top-0 right-0 w-2 h-2 bg-pink-500 rounded-full"></span>
-                        </button>
-                        <button onClick={() => dispatch(logout())} className="hover:text-white transition">
-                            <LogOut className="w-5 h-5" />
-                        </button>
+                      
+                        <div className="group relative">
+                            <button onClick={() => dispatch(logout())} className="hover:text-white transition">
+                                <LogOut className="w-5 h-5" />
+                            </button>
+                            <span
+                                className="absolute top-6 left-14 -translate-x-1/2 -translate-y-full mb-2 
+                                           bg-rose-500 text-white text-sm px-3 py-1 rounded opacity-0 
+                                           group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+                                Logout
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>

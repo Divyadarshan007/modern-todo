@@ -4,14 +4,8 @@ import { useDispatch, useSelector } from "react-redux"
 import { addTask, deleteTask, editTask, fetchTask } from "../features/todoSlice"
 import { useNavigate } from "react-router-dom"
 import { doc, getDoc, updateDoc } from "firebase/firestore"
-import clsx from 'clsx'
-import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from "@headlessui/react"
-import { ChevronDownIcon, ChevronRight } from "lucide-react"
 import Header from "../components/Header"
 import toast from "react-hot-toast"
-
-
-
 
 const Home = () => {
     const [input, setInput] = useState({
@@ -98,13 +92,12 @@ const Home = () => {
                             <div className="bg-[rgba(255,255,255,0.02)] rounded-2xl p-6 shadow-lg">
                                 <div className="flex justify-between items-center mb-6">
                                     <div>
-                                        <div className="text-xs text-slate-400">25 JUN</div>
+                                        <div className="text-xs text-slate-400">{new Date().toLocaleDateString("en-GB")}</div>
                                         <div className="mt-2 text-2xl font-bold">Today's Tasks</div>
                                     </div>
                                     <div className="w-80">
                                         <div className="text-xs text-slate-300 mb-2 flex justify-between">
-                                            <span>Done: 12</span>
-                                            <span>Must Do: 16</span>
+
                                         </div>
                                         <div className="h-3 rounded-full bg-[rgba(255,255,255,0.04)] overflow-hidden">
                                             <div className="h-full rounded-full" style={{
@@ -150,12 +143,19 @@ const Home = () => {
 
                                     {
                                         tasks.map((task) => {
-                                            return task.status == "pending" ? <div key={task.id} className="space-y-4 pb-5 cursor-pointer" onClick={() => markComplete(task.id)}>
+                                            return task.status == "pending" ? <div key={task.id} className="space-y-4 pb-5 cursor-pointer" >
                                                 <div
                                                     className="p-4 rounded-lg border border-[rgba(255,255,255,0.03)] bg-gradient-to-br from-[rgba(255,255,255,0.01)] to-transparent flex items-start justify-between">
                                                     <div className="flex-1">
                                                         <div className="flex items-center gap-3">
-                                                            <div className="w-3 h-3 rounded-full border"></div>
+                                                            <div className="w-4 h-4 relative rounded-full group border" onClick={() => markComplete(task.id)}>
+                                                                <span
+                                                                    className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-full mb-2 
+                                                                             bg-black text-white text-sm px-3 py-1 rounded opacity-0 
+                                                                            group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+                                                                    Done
+                                                                </span>
+                                                            </div>
                                                             <div className="font-medium">{task.task}</div>
                                                         </div>
                                                         <p className="text-sm text-slate-400 mt-2">{task.status}</p>
@@ -183,7 +183,7 @@ const Home = () => {
                         <aside className="w-96 bg-[rgba(255,255,255,0.03)] rounded-2xl p-6 shadow-lg">
                             <div className="flex items-center justify-between mb-4">
                                 <div className="text-lg font-bold">Completed Tasks</div>
-                                <div className="text-sm text-slate-400">0</div>
+                                <div className="text-sm text-slate-400">{tasks.filter(data => data.status == "completed").length}</div>
                             </div>
 
                             <div className="space-y-4 overflow-y-auto max-h-[35vh] scrollbar ">
